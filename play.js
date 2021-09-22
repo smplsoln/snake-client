@@ -40,3 +40,31 @@ conn.on('timeout', () => {
   console.log(`Connection: ${conn}`);
   console.log({ conn });
 });
+
+// Moves
+const moves = ["Move: up", 'Move: left', 'Move: down', 'Move: right'];
+const moveInterval = 50;
+let moveCount = 0;
+
+// 2nd callback on 'connect' to send moves
+conn.on("connect", () => {
+  console.log("*** Connected to Snek server! ***");
+  setInterval(() => {
+    const move = getRandomMove();
+    console.log(`move ${moveCount} : ${move}`);
+    moveCount++;
+    conn.write(move);
+  }, moveInterval);
+});
+
+function getRandomMove() {
+  const moveIndex = randomIndex(moves.length);
+  console.log('moveIndex: ' + moveIndex);
+  const move = moves[moveIndex];
+  // console.log('move ' + moveIndex + ' : ' + move);
+  return move;
+}
+
+function randomIndex(bound) {
+  return Math.floor(Math.floor(Math.random() * 1000) % bound);
+}
