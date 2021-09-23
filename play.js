@@ -1,6 +1,7 @@
-const net = require('net');
+// const net = require('net');
 
 const { connect } = require('./client');
+const { setupInput } = require("./input");
 
 // establish a connection with the game server
 // const connect = client.connect;
@@ -42,33 +43,12 @@ conn.on('timeout', () => {
   // console.log({ conn });
 });
 
-const setupInput = () => {
-  const stdin = process.stdin;
-  stdin.setRawMode(true);
-  stdin.setEncoding("utf8");
-  stdin.resume();
-  return stdin;
-};
-
+// Setup Standard Input ( and keyboard listener)
 const stdin = setupInput();
 
-const handleUserInput = (key) => {
-  // your code here
-  // handle CTRL+C
-  if (key === '\u0003') {
-    console.log('CTRL + C pressed, ending connection!');
-    conn.destroy();
-    process.exit();
-  }
-};
-
-stdin.on("data", handleUserInput);
-
-
 // Moves
-const moves = ["Move: up", 'Move: left', 'Move: down', 'Move: right'];
 const moveInterval = 50;
-let moveCount = 0;
+const moves = ["Move: up", 'Move: left', 'Move: down', 'Move: right'];
 
 const getRandomMove = () => {
   const moveIndex = randomIndex(moves.length);
@@ -81,6 +61,8 @@ const getRandomMove = () => {
 const randomIndex = (bound) => {
   return Math.floor(Math.floor(Math.random() * 1000) % bound);
 };
+
+let moveCount = 0;
 
 let refreshIntervalId;
 // 2nd callback on 'connect' to send moves
