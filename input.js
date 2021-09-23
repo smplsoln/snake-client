@@ -15,23 +15,24 @@ const randomIndex = (bound) => {
   return Math.floor(Math.floor(Math.random() * 1000) % bound);
 };
 
+let keyToMoveIndexMap = {
+  'w': 0,
+  'a': 1,
+  's': 2,
+  'd': 3,
+  'W': 0,
+  'A': 1,
+  'S': 2,
+  'D': 3,
+  '\u001B\u005B\u0041': 0,
+  '\u001B\u005B\u0044': 1,
+  '\u001B\u005B\u0042': 2,
+  '\u001B\u005B\u0043': 3
+};
+
 const getMoveForKey = (key) => {
   let moveIndex = 0;
-  if (key === 'w' || key === 'W') {
-    moveIndex = 0;
-  }
-
-  if (key === 'a' || key === 'A') {
-    moveIndex = 1;
-  }
-
-  if (key === 's' || key === 'S') {
-    moveIndex = 2;
-  }
-
-  if (key === 'd' || key === 'D') {
-    moveIndex = 3;
-  }
+  moveIndex = keyToMoveIndexMap[key];
   let move = moves[moveIndex];
   return move;
 };
