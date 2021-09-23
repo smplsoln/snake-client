@@ -1,53 +1,22 @@
 let connection;
 
-const serverMessages = ['Move: up', 'Move: left', 'Move: down', 'Move: right', 'Say: Hi Snakes', 'Say: Bye Snakes'];
-
-let keyTomsgIndexMap = {
-  'w': 0,
-  'a': 1,
-  's': 2,
-  'd': 3,
-  'W': 0,
-  'A': 1,
-  'S': 2,
-  'D': 3,
-  '\u001B\u005B\u0041': 0,
-  '\u001B\u005B\u0044': 1,
-  '\u001B\u005B\u0042': 2,
-  '\u001B\u005B\u0043': 3,
-  'h': 4,
-  'H': 4,
-  'b': 5,
-  'B': 5
-};
-
-const getRandomMsg = () => {
-  const msgIndex = randomIndex(serverMessages.length);
-  console.log('msgIndex: ' + msgIndex);
-  const msg = serverMessages[msgIndex];
-  // console.log('msg ' + msgIndex + ' : ' + msg);
-  return msg;
-};
-
-const randomIndex = (bound) => {
-  return Math.floor(Math.floor(Math.random() * 1000) % bound);
-};
+let { KEY_TO_SERVER_MSG_MAP, CTRL_C } = require('./constants');
 
 const getMsgForKey = (key) => {
-  let msgIndex = 0;
-  if (Object.keys(keyTomsgIndexMap).includes(key)) {
-    msgIndex = keyTomsgIndexMap[key];
+  if (!Object.keys(KEY_TO_SERVER_MSG_MAP).includes(key)) {
+    return KEY_TO_SERVER_MSG_MAP[['w']]; // default Move up
   }
-  let msg = serverMessages[msgIndex];
+  let msg = KEY_TO_SERVER_MSG_MAP[key];
   return msg;
 };
 
 let msgCount = 0;
 const handleUserInput = (key) => {
   console.log(`Key pressed: ${key}`);
+
   // your code here
   // handle CTRL+C
-  if (key === '\u0003') {
+  if (key === CTRL_C) {
     console.log('CTRL + C pressed, ending connection!');
     // conn.destroy();
     process.exit();
@@ -75,4 +44,3 @@ const setupInput = (conn) => {
 };
 
 module.exports = { setupInput };
-
