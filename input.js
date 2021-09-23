@@ -1,21 +1,8 @@
-
-const moves = ["Move: up", 'Move: left', 'Move: down', 'Move: right'];
-
 let connection;
 
-const getRandomMove = () => {
-  const moveIndex = randomIndex(moves.length);
-  console.log('moveIndex: ' + moveIndex);
-  const move = moves[moveIndex];
-  // console.log('move ' + moveIndex + ' : ' + move);
-  return move;
-};
+const serverMessages = ['Move: up', 'Move: left', 'Move: down', 'Move: right', 'Say: Hi Snakes', 'Say: Bye Snakes'];
 
-const randomIndex = (bound) => {
-  return Math.floor(Math.floor(Math.random() * 1000) % bound);
-};
-
-let keyToMoveIndexMap = {
+let keyTomsgIndexMap = {
   'w': 0,
   'a': 1,
   's': 2,
@@ -27,17 +14,35 @@ let keyToMoveIndexMap = {
   '\u001B\u005B\u0041': 0,
   '\u001B\u005B\u0044': 1,
   '\u001B\u005B\u0042': 2,
-  '\u001B\u005B\u0043': 3
+  '\u001B\u005B\u0043': 3,
+  'h': 4,
+  'H': 4,
+  'b': 5,
+  'B': 5
 };
 
-const getMoveForKey = (key) => {
-  let moveIndex = 0;
-  moveIndex = keyToMoveIndexMap[key];
-  let move = moves[moveIndex];
-  return move;
+const getRandomMsg = () => {
+  const msgIndex = randomIndex(serverMessages.length);
+  console.log('msgIndex: ' + msgIndex);
+  const msg = serverMessages[msgIndex];
+  // console.log('msg ' + msgIndex + ' : ' + msg);
+  return msg;
 };
 
-let moveCount = 0;
+const randomIndex = (bound) => {
+  return Math.floor(Math.floor(Math.random() * 1000) % bound);
+};
+
+const getMsgForKey = (key) => {
+  let msgIndex = 0;
+  if (Object.keys(keyTomsgIndexMap).includes(key)) {
+    msgIndex = keyTomsgIndexMap[key];
+  }
+  let msg = serverMessages[msgIndex];
+  return msg;
+};
+
+let msgCount = 0;
 const handleUserInput = (key) => {
   console.log(`Key pressed: ${key}`);
   // your code here
@@ -53,12 +58,11 @@ const handleUserInput = (key) => {
     return;
   }
 
-  let move = getMoveForKey(key);
-  console.log(`move ${moveCount} : ${move}`);
-  moveCount++;
-  connection.write(move);
+  let msg = getMsgForKey(key);
+  console.log(`msg ${msgCount} : ${msg}`);
+  msgCount++;
+  connection.write(msg);
 };
-
 
 const setupInput = (conn) => {
   connection = conn;
@@ -70,5 +74,5 @@ const setupInput = (conn) => {
   return stdin;
 };
 
-module.exports = { setupInput, getRandomMove };
+module.exports = { setupInput };
 

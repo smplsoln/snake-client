@@ -1,7 +1,7 @@
 // const net = require('net');
 
 const { connect } = require('./client');
-const { setupInput, getRandomMove } = require("./input");
+const { setupInput } = require("./input");
 
 // establish a connection with the game server
 // const connect = client.connect;
@@ -45,25 +45,3 @@ conn.on('timeout', () => {
 // Setup Standard Input ( and keyboard listener)
 const stdin = setupInput(conn);
 
-// Moves
-// let moveInterval = 50;
-// let moveCount = 0;
-// let refreshIntervalId;
-
-// 2nd callback on 'connect' to send moves
-// conn.on("connect", () => {
-//   console.log("*** Connected to Snek server! ***");
-//   refreshIntervalId = setInterval(() => {
-//     if (conn.destroyed) {
-//       console.log('Connection destroyed: Not sending Move commands to server');
-//       console.log(`Connection destroyed, Ending client data sender: ${refreshIntervalId}`);
-//       clearInterval(refreshIntervalId);
-//       process.exit();
-//       return;
-//     }
-//     const move = getRandomMove();
-//     console.log(`move ${moveCount} : ${move}`);
-//     moveCount++;
-//     conn.write(move);
-//   }, moveInterval);
-// });
